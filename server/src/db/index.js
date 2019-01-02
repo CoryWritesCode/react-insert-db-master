@@ -33,8 +33,6 @@ chirprdb.newUser = (text, name, email, password, location) => {
         SELECT LAST_INSERT_ID() INTO @user_id;
         INSERT INTO chirps (userid, text, location)
         VALUES (@user_id, '${text}', '${location}');
-        INSERT INTO mentions (userid, chirpid)
-        VALUES (@user_id, LAST_INSERT_ID());
       COMMIT;`,
       (error, results) => {
         if (error) {
