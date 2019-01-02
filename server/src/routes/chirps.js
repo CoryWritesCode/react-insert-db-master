@@ -1,31 +1,45 @@
 import { Router } from 'express';
-import chirpStore from '../chirpstore';
+import db from '../db';
 
 let router = Router();
 
-router.get('/:id?', (req, res) => {
+router.get('/:id?', async (req, res) => {
     let id = req.params.id;
     if (id) {
-        res.json(chirpStore.GetChirp(id));
+        try {
+            let results = await db.one(id);
+            res.json(results);
+        } catch (e) {
+            console.log(e);
+            res.sendStatus(500);
+        }
     } else {
-        res.json(chirpStore.GetChirps());
-    };
+        try {
+            let results = await db.all();
+            res.json(results);
+        } catch (e) {
+            console.log(e);
+            res.sendStatus(500);
+        }
+    }
 });
 
 router.post('/', (req, res) => {
-    chirpStore.CreateChirp(req.body);
+    let user = req.body.user;
+    let text = req.body.text;
+    db.post(user, text);
     res.sendStatus(200);
 });
 
 router.put('/:id', (req, res) => {
     let id = req.params.id;
-    chirpStore.UpdateChirp(id, req.body);
+    db.put(id, req.body);
     res.sendStatus(200);
 });
 
 router.delete('/:id', (req, res) => {
     let id = req.params.id;
-    chirpStore.DeleteChirp(id);
+    db.del(id);
     res.sendStatus(200);
 })
 

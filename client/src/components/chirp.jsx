@@ -9,14 +9,26 @@ function Chirp(props) {
       <div
         style={{ justifyContent: 'flex-end' }}
         key="lKey">
+        <small className="card-subtitle mb-2">Created At: {props.time}</small>
+        <br></br>
+        <small className="card-text">
+          Writen by {props.name}</small>
+        <br></br>
         <Link
           className="btn btn-outline-light"
-          style={{ margin: '10px' }} to={`${props.id}/edit`}>
+          style={{
+            marginTop: '10px',
+            marginRight: '10px'
+            }}
+          to={`${props.id}/edit`}>
           Edit
           </Link>
         <button
           className="btn btn-outline-light"
-          style={{ margin: '10px' }}
+          style={{
+            marginTop: '10px',
+            marginRight: '10px'
+            }}
           onClick={ props.onClick }>
           Delete
           </button>
@@ -25,7 +37,10 @@ function Chirp(props) {
   } else {
     link = <Link
               className="btn btn-success btn-outline-light"
-              style={{ margin: '10px' }}
+              style={{
+                marginTop: '10px',
+                marginRight: '10px'
+                }}
               to={`chirps/${props.id}`}>
               Details
               </Link>
@@ -39,16 +54,9 @@ function Chirp(props) {
           margin: '20px',
           fontWeight: 'bold'
           }}>
-        <div
-          className="card-body"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between'
-            }}>
-          <p
-            className="card-text">
-            {props.text}
-            </p>
+        <div className="card-body">
+          <h4 className="card-title">
+            {props.text}</h4>
           { link }
         </div>
       </div>

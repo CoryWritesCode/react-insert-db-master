@@ -30,7 +30,6 @@ class Details extends Component {
       })
       .then(
         (json) => {
-
           this.setState({
             chirps: json,
           })
@@ -42,11 +41,15 @@ class Details extends Component {
   }
 
   render() {
+    let id = this.props.match.params.id
+
     return (
       <Chirp
+        name={ this.state.chirps.name }
         text={ this.state.chirps.text }
-        key={ this.props.match.params.id }
-        id={ this.props.match.params.id }
+        time={ this.state.chirps._created }
+        key={ id }
+        id={ id }
         details={ true }
         onClick={ this.handleClick } />
     )
