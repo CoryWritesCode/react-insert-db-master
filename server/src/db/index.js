@@ -11,15 +11,17 @@ let pool = mysql.createPool({
 let chirprdb = {};
 
 chirprdb.user = (name) => {
-  pool.query(
-    `SELECT id FROM users WHERE name == '${name}';`,
-    (error, results) => {
-      if (error) {
-        console.log(error);
+  return new Promise ((resolve, reject) => {
+    pool.query(
+      `SELECT id FROM users WHERE name = '${name}';`,
+      (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results[0].id);
       }
-      return results[0];
-    }
-  )
+    )
+  })
 }
 
 chirprdb.newUser = (text, name, email, location) => {
@@ -33,7 +35,13 @@ chirprdb.newUser = (text, name, email, location) => {
         VALUES (@user_id, '${text}', '${location}');
         INSERT INTO mentions (userid, chirpid)
         VALUES (@user_id, LAST_INSERT_ID());
-      COMMIT;`
+      COMMIT;`,
+      (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results);
+      }
     )
   })
 }
@@ -94,36 +102,14 @@ chirprdb.put = (id, text) => {
 chirprdb.post = (user, text) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT * FROM users WHERE name = '${user}';`,
+      `INSERT INTO chirps (userid, text) VALUES (${user}, '${text}');`,
       (error, results) => {
         if (error) {
-          return reject(error)
-        } else if (results[0].name == null) {
-          pool.query(
-            'INSERT INTO users (name, '
-          )
-        } else {
-          pool.query(
-            `INSERT INTO chirps (userid, text) VALUES (${user}, '${text}');`,
-            (error, results) => {
-              if (error) {
-                return reject(error);
-              }
-              return resolve(results);
-            }
-          )
+          return reject(error);
         }
+        return resolve(results);
       }
     )
-    // pool.query(
-    //   `INSERT INTO chirps (userid, text) VALUES (${user}, '${text}');`,
-    //   (error, results) => {
-    //     if (error) {
-    //       return reject(error);
-    //     }
-    //     return resolve(results);
-    //   }
-    // )
   })
 }
 

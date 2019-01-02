@@ -24,18 +24,29 @@ router.get('/:id?', async (req, res) => {
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     let user = req.body.user;
     let text = req.body.text;
     let email = req.body.email;
     let password = req.body.password;
+    let userId = await db.user(user);
 
-    if (email === '') {
-        db.newUser(text, user, email, password, 'web');
-        res.sendStatus(200);
+    if (email === '' && password === '') {
+        try {
+            db.newUser(text, user, email, password, 'web');
+            res.sendStatus(200);
+        } catch (e) {
+            console.log(e);
+            res.sendStatus(500);
+        }
     } else {
-        db.post(user, text);
-        res.sendStatus(200);
+        try {
+            db.post(userId, text);
+            res.sendStatus(200);
+        } catch {
+            console.log(e);
+            res.sendStatus(500);
+        }
     }
 });
 
