@@ -33,7 +33,9 @@ class Home extends Component {
   handleClick() {
     let obj = {
       text: this.state.value,
-      user: this.state.user
+      user: this.state.user,
+      email: this.state.email,
+      password: this.state.password
     }
 
     fetch('http://localhost:3000/api/chirps', {
@@ -46,7 +48,9 @@ class Home extends Component {
 
     this.setState({
       value: '',
-      user: ''
+      user: '',
+      email: '',
+      password: ''
     });
 
     fetch('http://localhost:3000/api/chirps')

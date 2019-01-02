@@ -29,9 +29,9 @@ router.post('/', async (req, res) => {
     let text = req.body.text;
     let email = req.body.email;
     let password = req.body.password;
-    let userId = await db.user(user);
+    let userId;
 
-    if (email === '' && password === '') {
+    if (email !== '' && password !== '') {
         try {
             db.newUser(text, user, email, password, 'web');
             res.sendStatus(200);
@@ -41,6 +41,7 @@ router.post('/', async (req, res) => {
         }
     } else {
         try {
+            userId = await db.user(user);
             db.post(userId, text);
             res.sendStatus(200);
         } catch {

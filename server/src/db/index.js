@@ -24,7 +24,7 @@ chirprdb.user = (name) => {
   })
 }
 
-chirprdb.newUser = (text, name, email, location) => {
+chirprdb.newUser = (text, name, email, password, location) => {
   return new Promise ((resolve, reject) => {
     pool.query(
       `BEGIN;
