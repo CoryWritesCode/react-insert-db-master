@@ -50,7 +50,7 @@ chirprdb.one = id => {
 chirprdb.del = id => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `DELETE FROM chirps WHERE id = ${id};`,
+      `DELETE c FROM chirps c WHERE c.id = ${id};`,
       (error, results) => {
         if (error) {
           return reject(error);
