@@ -29,11 +29,12 @@ router.post('/', async (req, res) => {
     let text = req.body.text;
     let email = req.body.email;
     let password = req.body.password;
+    let location = 'web';
     let userId;
 
     if (email !== '' && password !== '') {
         try {
-            db.newUser(text, user, email, password, 'web');
+            db.newUser(text, user, email, password, location);
             res.sendStatus(200);
         } catch (e) {
             console.log(e);
