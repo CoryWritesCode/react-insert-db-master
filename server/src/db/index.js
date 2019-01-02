@@ -5,7 +5,8 @@ let pool = mysql.createPool({
   host: 'localhost',
   user: 'chirprapp',
   password: 'chirp123',
-  database: 'chirpr'
+  database: 'chirpr',
+  multipleStatements: true
 });
 
 let chirprdb = {};
@@ -24,15 +25,15 @@ chirprdb.user = (name) => {
   })
 }
 
+
+
 chirprdb.newUser = (text, name, email, password, location) => {
   return new Promise ((resolve, reject) => {
     pool.query(
       `BEGIN;
-        INSERT INTO users (name, email, password)
-        VALUES ('${name}', '${email}', '${password}');
-        SELECT LAST_INSERT_ID() INTO @user_id;
-        INSERT INTO chirps (userid, text, location)
-        VALUES (@user_id, '${text}', '${location}');
+       INSERT INTO users (name, email, password) VALUES ('${name}', '${email}', '${password}');
+       SELECT LAST_INSERT_ID() INTO @user_id;
+       INSERT INTO chirps (userid, text, location) VALUES (@user_id, '${text}', '${location}');
       COMMIT;`,
       (error, results) => {
         if (error) {
