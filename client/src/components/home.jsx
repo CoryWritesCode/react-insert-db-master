@@ -10,13 +10,24 @@ class Home extends Component {
     this.state = {
       chirps: {},
       value: '',
-      user: ''
+      user: '',
+      newUser: false,
+      email: '',
+      password: ''
     }
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUserChange = this.handleUserChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
+  }
 
+  handleCheck() {
+    this.setState({
+      newUser: !this.state.newUser
+    })
   }
 
   handleClick() {
@@ -67,6 +78,18 @@ class Home extends Component {
     });
   }
 
+  handleEmailChange(e) {
+    this.setState({
+      email: e.target.value
+    });
+  }
+
+  handlePasswordChange(e) {
+    this.setState({
+      password: e.target.value
+    });
+  }
+
   componentWillMount() {
 
     fetch('http://localhost:3000/api/chirps')
@@ -87,8 +110,34 @@ class Home extends Component {
 
   render() {
 
-    var { value, chirps, user } = this.state;
+    let newUserForm
+    var {
+      value,
+      chirps,
+      user,
+      email,
+      password,
+      newUser
+    } = this.state;
     var keys = Object.keys(chirps);
+
+    if (newUser == true) {
+      newUserForm =
+      <Fragment>
+      <Form
+        value={email}
+        onChange={this.handleEmailChange}
+        display={newUser}
+        placeholder={'email@email.com'}
+      />
+        <Form
+          value={password}
+          onChange={this.handlePasswordChange}
+          display={newUser}
+          placeholder={'Password'}
+        />
+        </Fragment>
+    }
 
     return (
       <Fragment>
@@ -97,15 +146,25 @@ class Home extends Component {
           styles={{ position: 'absolute' }}>
           <Form
             value={user}
-            onClick={this.handleClick}
             onChange={this.handleUserChange}
             placeholder={'User Info'}
             display={ false } />
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              onClick={this.handleCheck}
+              value="option1"></input>
+            <label
+              className="form-check-label"
+              >
+              New User?</label>
+          </div>
+          {newUserForm}
           <Form
             value={value}
             onClick={this.handleClick}
             onChange={this.handleChange}
-            onUserChange={this.handleUserChange}
             placeholder={'Say Something!'} />
         </div>
         <Fragment>

@@ -10,6 +10,13 @@ function Form(props) {
                 disabled >
                 Required*
                 </button>
+  } else if (props.display == true) {
+    button = <button
+                className="btn btn-outline-danger"
+                type="button"
+                disabled >
+                Required*
+                </button>
   } else if (props.value.length < 1) {
     button = <button
       className="btn btn-outline-dark"
